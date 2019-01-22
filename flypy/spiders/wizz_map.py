@@ -3,15 +3,12 @@ import json
 import scrapy
 
 
-
-
 class WizzMapSpider(scrapy.Spider):
     name = 'wizz_map'
     allowed_domains = ['wizzair.com']
     start_urls = [
         'https://be.wizzair.com/9.4.0/Api/asset/map?languageCode=en-gb&forceJavascriptOutput=true'
     ]
-
 
     def stripData(self, jsonInput):
         data = {}
@@ -26,7 +23,6 @@ class WizzMapSpider(scrapy.Spider):
 
         return data
 
-
     def parse(self, response):
         # Parse this JS file to only get the
         """
@@ -35,6 +31,7 @@ class WizzMapSpider(scrapy.Spider):
                     "longitude": 19.720555555555553,
                 ...
         """
+        print(response.headers.getlist("Set-Cookie"))
         r = response.body_as_unicode().split("=")[2]
 
         # Also remove the trailing semicolon
@@ -50,4 +47,3 @@ class WizzMapSpider(scrapy.Spider):
 
         # with open("map.json") as f:
         #     map = json.load(f)
-
